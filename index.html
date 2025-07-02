@@ -14,9 +14,11 @@
   }
   .video-container {
     position: relative;
-    width: 720px;
-    height: 1280px;
+    width: 360px;  /* A szélesség fele */
+    height: 640px;  /* A magasság fele */
     background: black;
+    border: 5px solid #00bcd4; /* Türkizkék keret */
+    border-radius: 10px; /* Lekerekített sarkok */
   }
   video {
     width: 100%;
@@ -37,8 +39,8 @@
   }
   .button {
     position: absolute;
-    width: 25px;
-    height: 25px;
+    width: 25px; /* Az eredeti gombméret */
+    height: 25px; /* Az eredeti gombméret */
     background-color: transparent;
     background-image: url('gomb.png');
     background-size: contain;
@@ -49,20 +51,20 @@
     cursor: pointer;
     z-index: 2;
   }
-  /* Gombok pozíciói */
-  #jobbkezle2Button { left: 500px; top: 640px; }
-  #balkezle2Button { left: 205px; top: 529px; display: none; }
+  /* Gombok pozíciói - most felezve */
+  #jobbkezle2Button { left: 250px; top: 320px; }
+  #balkezle2Button { left: 102px; top: 264px; display: none; }
 
-  #csokButton { left: 390px; top: 215px; }
-  #glassesButton { left: 335px; top: 162px; }
-  #hairButton { left: 395px; top: 85px; }
+  #csokButton { left: 195px; top: 107px; }
+  #glassesButton { left: 168px; top: 81px; }
+  #hairButton { left: 198px; top: 43px; }
 
-  #khmButton { left: 375px; top: 815px; display: none; }
-  #bicepszButton { left: 235px; top: 380px; display: none; }
-  #gatyaleButton { left: 460px; top: 836px; display: none; }
-  #polofelButton { left: 375px; top: 700px; display: none; }
+  #khmButton { left: 188px; top: 407px; display: none; }
+  #bicepszButton { left: 117px; top: 190px; display: none; }
+  #gatyaleButton { left: 230px; top: 418px; display: none; }
+  #polofelButton { left: 188px; top: 350px; display: none; }
 
-  #pololeButton { left: 365px; top: 238px; display: none; }
+  #pololeButton { left: 182px; top: 119px; display: none; }
 </style>
 </head>
 <body>

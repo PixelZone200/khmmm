@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html lang="hu">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Interaktív Videó</title>
+<style>
+  body, html {
+    margin: 0; padding: 0; height: 100%;
+    background: #000;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  .video-container {
+    position: relative;
+    width: 720px;
+    height: 1280px;
+    background: black;
+  }
+  video {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    background-color: black;
+    opacity: 1;
+    transition: opacity 0.3s ease;
+  }
+  #jobbkezle2Image {
+    position: absolute;
+    top: 0; left: 0;
+    width: 100%;
+    height: 100%;
+    display: none;
+    z-index: 1;
+  }
+  .button {
+    position: absolute;
+    width: 25px;
+    height: 25px;
+    background-color: transparent;
+    background-image: url('gomb.png');
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+    border: none;
+    border-radius: 50%;
+    cursor: pointer;
+    z-index: 2;
+  }
+  /* Gombok pozíciói */
+  #jobbkezle2Button { left: 500px; top: 640px; }
+  #balkezle2Button { left: 205px; top: 529px; display: none; }
+
+  #csokButton { left: 390px; top: 215px; }
+  #glassesButton { left: 335px; top: 162px; }
+  #hairButton { left: 395px; top: 85px; }
+
+  #khmButton { left: 375px; top: 815px; display: none; }
+  #bicepszButton { left: 235px; top: 380px; display: none; }
+  #gatyaleButton { left: 460px; top: 836px; display: none; }
+  #polofelButton { left: 375px; top: 700px; display: none; }
+
+  #pololeButton { left: 365px; top: 238px; display: none; }
+</style>
+</head>
+<body>
+  <div class="video-container">
+    <video id="video" autoplay muted loop preload="auto"></video>
+    <img id="jobbkezle2Image" src="jobbkezleallas.png" />
+
+    <!-- Gombok -->
+    <button class="button" id="jobbkezle2Button"></button>
+    <button class="button" id="balkezle2Button"></button>
+
+    <!-- Extra gombok -->
+    <button class="button" id="csokButton"></button>
+    <button class="button" id="glassesButton"></button>
+    <button class="button" id="hairButton"></button>
+
+    <!-- Alapallas2 gombok -->
+    <button class="button" id="khmButton"></button>
+    <button class="button" id="bicepszButton"></button>
+    <button class="button" id="gatyaleButton"></button>
+    <button class="button" id="polofelButton"></button>
+
+    <!-- Új gomb polosallas-hoz -->
+    <button class="button" id="pololeButton"></button>
+  </div>
+
+<script>
+  const video = document.getElementById("video");
+  const jobbImage = document.getElementById("jobbkezle2Image");
+
+  const jobbBtn = document.getElementById("jobbkezle2Button");
+  const balBtn = document.getElementById("balkezle2Button");
+
+  const csokBtn = document.getElementById("csokButton");
+  const glassesBtn = document.getElementById("glassesButton");
+  const hairBtn = document.getElementById("hairButton");
+
+  const khmBtn = document.getElementById("khmButton");
+  const bicepszBtn = document.getElementById("bicepszButton");
+  const gatyaleBtn = document.getElementById("gatyaleButton");
+  const polofelBtn = document.getElementById("polofelButton");
+
+  const pololeBtn = document.getElementById("pololeButton");
+
+  const videos = {
+    alapallas: "alapallas.mp4",
+    jobb: "jobbkezle2.mp4",
+    bal: "balkezle2.mp4",
+    alap2: "alapallas2.mp4",
+    csok: "csok.mp4",
+    glasses: "szemuveg.mp4",
+    hair: "hajpiszkalas.mp4",
+    khm: "khm.mp4",
+    bicepsz: "bicepsz.mp4",
+    gatyale: "gatyale.mp4",
+    polofel: "polofel.mp4",
+    polosallas: "polosallas.mp4",
+    polole: "polole.mp4"
+  };
+
+  function showButtons(buttons) {
+    const allButtons = [
+      csokBtn, glassesBtn, hairBtn,
+      jobbBtn, balBtn,
+      khmBtn, bicepszBtn, gatyaleBtn, polofelBtn,
+      pololeBtn
+    ];
+    allButtons.forEach(btn => btn.style.display = "none");
+    buttons.forEach(btn => btn.style.display = "block");
+  }
+
+  function setVideo(src, loop) {
+    video.style.opacity = 0;
+    video.pause();
+
+    video.onended = null;
+
+    video.src = src;
+    video.loop = loop;
+    video.load();
+
+    video.oncanplay = () => {
+      video.play();
+      video.style.transition = "opacity 0.3s ease";
+      video.style.opacity = 1;
+    };
+  }
+
+  // Kezdeti állapot
+  setVideo(videos.alapallas, true);
+  showButtons([csokBtn, glassesBtn, hairBtn, jobbBtn]);
+
+  // jobbkezle2Button esemény
+  jobbBtn.onclick = () => {
+    setVideo(videos.jobb, false);
+    showButtons([]);
+    video.onended = () => {
+      jobbImage.style.display = "block";
+      balBtn.style.display = "block";
+
+      balBtn.onclick = () => {
+        balBtn.style.display = "none";
+        jobbImage.style.display = "none";
+        setVideo(videos.bal, false);
+        video.onended = () => {
+          setVideo(videos.alap2, true);
+          // alap2-nél nincs hair, glasses és jobbkezle2 gomb
+          showButtons([csokBtn, khmBtn, bicepszBtn, gatyaleBtn, polofelBtn]);
+        };
+      };
+    };
+  };
+
+  // Csok gomb
+  csokBtn.onclick = () => {
+    setVideo(videos.csok, false);
+    showButtons([]);
+    video.onended = () => {
+      setVideo(videos.alapallas, true);
+      showButtons([csokBtn, glassesBtn, hairBtn, jobbBtn]);
+    };
+  };
+
+  // Szemüveg gomb
+  glassesBtn.onclick = () => {
+    setVideo(videos.glasses, false);
+    showButtons([]);
+    video.onended = () => {
+      setVideo(videos.alapallas, true);
+      showButtons([csokBtn, glassesBtn, hairBtn, jobbBtn]);
+    };
+  };
+
+  // Hajpiszkálás gomb
+  hairBtn.onclick = () => {
+    setVideo(videos.hair, false);
+    showButtons([]);
+    video.onended = () => {
+      setVideo(videos.alapallas, true);
+      showButtons([csokBtn, glassesBtn, hairBtn, jobbBtn]);
+    };
+  };
+
+  // khm gomb
+  khmBtn.onclick = () => {
+    setVideo(videos.khm, false);
+    showButtons([]);
+    video.onended = () => {
+      setVideo(videos.alap2, true);
+      // alap2-nél nincs hair, glasses és jobbkezle2 gomb
+      showButtons([csokBtn, khmBtn, bicepszBtn, gatyaleBtn, polofelBtn]);
+    };
+  };
+
+  // bicepsz gomb
+  bicepszBtn.onclick = () => {
+    setVideo(videos.bicepsz, false);
+    showButtons([]);
+    video.onended = () => {
+      setVideo(videos.alapallas, true);
+      showButtons([csokBtn, glassesBtn, hairBtn, jobbBtn]);
+    };
+  };
+
+  // gatyale gomb
+  gatyaleBtn.onclick = () => {
+    setVideo(videos.gatyale, false);
+    showButtons([]);
+    video.onended = () => {
+      setVideo(videos.alap2, true);
+      // alap2-nél nincs hair, glasses és jobbkezle2 gomb
+      showButtons([csokBtn, khmBtn, bicepszBtn, gatyaleBtn, polofelBtn]);
+    };
+  };
+
+  // polofel gomb
+  polofelBtn.onclick = () => {
+    setVideo(videos.polofel, false);
+    showButtons([]);
+    video.onended = () => {
+      setVideo(videos.polosallas, true);
+      showButtons([pololeBtn]); // csak polole gomb jelenjen meg polosallas alatt
+    };
+  };
+
+  // polole gomb
+  pololeBtn.onclick = () => {
+    setVideo(videos.polole, false);
+    showButtons([]);
+    video.onended = () => {
+      setVideo(videos.alapallas, true);
+      showButtons([csokBtn, glassesBtn, hairBtn, jobbBtn]);
+    };
+  };
+
+</script>
+</body>
+</html>
